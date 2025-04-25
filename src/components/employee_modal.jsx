@@ -1,10 +1,8 @@
 import TimeDropdown from "./dropdown_time";
-
+import EmployeeModalView from "./employee_modal_view";
 import React, {useState} from 'react';
 
-function Employee_modal({id,firstName,lastName,availableTime,maxShifts,assignedShifts,workAlone,canBatch,openViewModal}){
-
-
+function Employee_modal(props){
 
 
     function timeRange(time){
@@ -53,14 +51,25 @@ function Employee_modal({id,firstName,lastName,availableTime,maxShifts,assignedS
         setIsChecked(e.target.checked);
     };
 
+
     return(
         <div>
-            
-            <div className="modal show" id={`employee-edit-modal_${id}`} style={{filter: "none",display:"block"}}>
+            <EmployeeModalView
+                key={props.id}
+                id={props.id}
+                firstName={props.firstName}
+                lastName={props.lastName}
+                availableTime={props.availableTime}
+                maxShifts={props.maxShifts}
+                assignedShifts={props.assignedShifts}
+                workAlone={props.workAlone}
+                canBatch={props.canBatch}
+            />
+            <div className="modal fade" id={`employee-edit-modal_${props.id}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabIndex="-1">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                 <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="firstName">{firstName}</h1>
+                    <h1 className="modal-title fs-5" id="exampleModalToggleLabel2">{props?.firstName}</h1>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
@@ -68,8 +77,8 @@ function Employee_modal({id,firstName,lastName,availableTime,maxShifts,assignedS
                     <div className="col-12 row row-cols-12">
                         <p><strong>Name</strong></p>
                         <div className="col col-6">
-                            <label htmlFor={`firstName_${id}`} className="form-label">First name</label>
-                            <input type="text" className="form-control" id={`firstName_${id}`} placeholder="" onChange={onChange} defaultValue={firstName} required=""/>
+                            <label htmlFor="firstName" className="form-label">First name</label>
+                            <input type="text" className="form-control" id="firstName" placeholder="" onChange={onChange} defaultValue={props?.firstName} required=""/>
                             <div className="invalid-feedback">
                                 Valid first name is required.
                             </div>
@@ -77,8 +86,8 @@ function Employee_modal({id,firstName,lastName,availableTime,maxShifts,assignedS
 
 
                         <div className="col col-6">
-                            <label htmlFor={`lastName_${id}`} className="form-label">Last name</label>
-                            <input type="text" className="form-control" id={`lastName_${id}`} placeholder="" onChange={onChange} defaultValue={lastName} required=""/>
+                            <label htmlFor="lastName" className="form-label">Last name</label>
+                            <input type="text" className="form-control" id="lastName" placeholder="" onChange={onChange} defaultValue={props?.lastName} required=""/>
                             <div className="invalid-feedback">
                                 Valid last name is required.
                             </div>
@@ -102,12 +111,12 @@ function Employee_modal({id,firstName,lastName,availableTime,maxShifts,assignedS
           </div>
                 </div>
                 <div className="modal-footer">
-                    <button className="btn btn-primary" onClick={openViewModal}>Back to first</button>
+                    <button className="btn btn-primary" data-bs-target={`#employee-view-modal_${props.id}`} data-bs-toggle="modal">Back to first</button>
                 </div>
                 </div>
             </div>
             </div>
-            
+            <button className="btn btn-sm btn-outline-secondary" data-bs-target={`#employee-view-modal_${props.id}`} data-bs-toggle="modal">Open first modal</button>
         </div>
     )
     
@@ -141,12 +150,12 @@ function EachDay({day, startTime, endTime}){
             <div className="me-3">
                 {/* "From" text */}
                 <span className="me-2">From</span>
-                <TimeDropdown day={day} which="start"/>
+                <TimeDropdown />
             </div>
             <div>
                 {/* "To" text */}
                 <span className="me-2">To</span>
-                <TimeDropdown day={day} which="end"/>
+                <TimeDropdown />
             </div>
         </div>
     )}
