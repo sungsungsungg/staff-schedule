@@ -1,0 +1,8 @@
+.body-dimmed {
+    filter: brightness(0.5); /* Dim the background to 50% brightness */
+    pointer-events: none; /* Prevent interaction with the dimmed background */
+  }
+
+.modal-content{
+    filter:none;
+}
