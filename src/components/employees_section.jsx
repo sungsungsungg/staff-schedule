@@ -4,21 +4,19 @@ import EmployeeCard from "./employee_card.jsx";
 import Employee from "../utils/employee.js"
 
 
-function Employees_section({employees}){
+function Employees_section({employees, updateEmployeeInfo}){
+
 
 
   function createEmployeeList(emp){
+    const id = emp.id;
+    
     return(
       <EmployeeCard
-      key={emp.getId()}
-      id={emp.getId()}
-      firstName={emp.getFirstName()}
-      lastName={emp.getLastName()}
-      availableTime={emp.getAvailableTime()}
-      maxShifts={emp.getMaxShifts()}
-      assignedShifts={emp.getAssignedShifts()}
-      workAlone={emp.getCanWorkAlone()}
-      canBatch={emp.getCanProcessBatch()}
+      key={id}
+      employee= {emp}
+      id={id}
+      updateEmployeeInfo={updateEmployeeInfo}
     />
     )
     

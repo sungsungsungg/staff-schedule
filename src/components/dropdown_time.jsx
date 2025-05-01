@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 const TimeDropdown = ({day,which}) => {
     // Define the times for the dropdown
     const timeOptions = [
-        "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", 
-        "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm"
+        "open", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", 
+        "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm", "close"
     ];
 
     // State to store user input and the filtered options
@@ -14,7 +14,7 @@ const TimeDropdown = ({day,which}) => {
 
     // Function to handle input change and filter dropdown options
     const handleInputChange = (e) => {
-        const value = e.target.value.toLowerCase();
+        const value = e.target.value.toLowerCase().trim();
         setInput(value);
 
         // Filter the options based on the input

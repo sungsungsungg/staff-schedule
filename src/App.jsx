@@ -7,7 +7,7 @@ import ScheduleByDate from './components/shift_schedule.jsx';
 
 function App() {
   
-
+  //Setting employees for test run
   let employee_1 = new Employee(1,"Sunghoon","Kang");
   employee_1.setAvailableTime({
       1:[0,24],
@@ -131,28 +131,39 @@ function App() {
 
   const[employees,setEmployees] = useState([employee_1,employee_2,employee_3,employee_4,employee_5,employee_6,employee_7,employee_8]);
 
-  const[finalShift, setFinalShift] = useState({
-    1: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
-    2: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
-    3: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
-    4: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
-    5: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: true },
-    6: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: true },
-    7: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
-  })
+  // const[finalShift, setFinalShift] = useState({
+  //   1: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
+  //   2: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
+  //   3: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
+  //   4: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
+  //   5: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: true },
+  //   6: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: true },
+  //   7: { AM: [], mid: [], mid1: [], mid2: [], PM: [], isBusy: false },
+  // })
 
-  function createShiftPage(){
-    setFinalShift(createShift(employees));
+  // function createShiftPage(){
+  //   setFinalShift(createShift(employees));
+  // }
+
+  function updateEmployeeInfo(employeeId, update){
+    
+    setEmployees(prevEmployees=>
+      prevEmployees.map(employee =>
+        employee.id === employeeId ? {...update}:
+        employee
+      )
+    )
   }
+  
   
 
   return (
       <div>
-        <Employees_section employees={employees}/>
-        <div className ="d-flex justify-content-center align-items-center my-3">
+        <Employees_section employees={employees} updateEmployeeInfo={updateEmployeeInfo}/>
+        {/* <div className ="d-flex justify-content-center align-items-center my-3">
           <button type="button" onClick={createShiftPage} className="btn btn-outline-secondary mx-auto">Create Shift</button>
-        </div>
-        <ScheduleByDate finalShift={finalShift} employees={employees}/>
+        </div> */}
+        {/* <ScheduleByDate finalShift={finalShift} employees={employees}/> */}
       </div>
   )
 }
