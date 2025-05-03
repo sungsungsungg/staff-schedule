@@ -128,7 +128,7 @@ function App() {
   employee_8.setCanProcessBatch(false);
   // employees.push(employee_8);
 
-
+  //Example set of employees
   const[employees,setEmployees] = useState([employee_1,employee_2,employee_3,employee_4,employee_5,employee_6,employee_7,employee_8]);
 
   // const[finalShift, setFinalShift] = useState({
@@ -145,6 +145,13 @@ function App() {
   //   setFinalShift(createShift(employees));
   // }
 
+
+  //Update Employee Info
+  /*
+  * @param
+  * employeeId  correspoding ID of the employee
+  * update      Updated employee
+  */
   function updateEmployeeInfo(employeeId, update){
     
     setEmployees(prevEmployees=>
@@ -155,6 +162,7 @@ function App() {
     )
   }
 
+  //Delete Employee with corresponding ID
   function deleteEmployee(employeeId){
     setEmployees(prev=>
       prev.filter(employee=>
@@ -163,15 +171,20 @@ function App() {
     )
   }
 
-  function addEmployee(){
-    
+  function addEmployee(newEmployee){
+    setEmployees(prev=>
+      [
+        ...prev,
+        newEmployee
+      ]
+    )
   }
   
   
 
   return (
       <div>
-        <Employees_section employees={employees} updateEmployeeInfo={updateEmployeeInfo} deleteEmployee={deleteEmployee}/>
+        <Employees_section employees={employees} updateEmployeeInfo={updateEmployeeInfo} deleteEmployee={deleteEmployee} addEmployee={addEmployee}/>
         {/* <div className ="d-flex justify-content-center align-items-center my-3">
           <button type="button" onClick={createShiftPage} className="btn btn-outline-secondary mx-auto">Create Shift</button>
         </div> */}

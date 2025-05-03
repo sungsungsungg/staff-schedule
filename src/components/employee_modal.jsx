@@ -64,10 +64,10 @@ function Employee_modal({employee, updateEmployeeInfo, deleteEmployee}){
             {/* Employee Edit Modal */}
 
 
-            <div class="modal fade bd-example-modal-sm" id={`employee-delete-modal_${employee.id}`} tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div className="modal fade bd-example-modal-sm" id={`employee-delete-modal_${employee.id}`} tabIndex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
+                    <div className="modal-dialog modal-sm">
+                        <div className="modal-content">
                             <div className="modal-body">
                                 Are you sure to delete {employee.firstName}?
                             </div>
