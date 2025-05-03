@@ -4,7 +4,7 @@ import EmployeeCard from "./employee_card.jsx";
 import Employee from "../utils/employee.js"
 
 
-function Employees_section({employees, updateEmployeeInfo}){
+function Employees_section({employees, updateEmployeeInfo, deleteEmployee}){
 
 
 
@@ -17,6 +17,7 @@ function Employees_section({employees, updateEmployeeInfo}){
       employee= {emp}
       id={id}
       updateEmployeeInfo={updateEmployeeInfo}
+      deleteEmployee={deleteEmployee}
     />
     )
     

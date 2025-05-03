@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const TimeDropdown = ({day,which}) => {
+const TimeDropdown = ({day,which, setFormData, formData, isEscaped}) => {
     // Define the times for the dropdown
     const timeOptions = [
         "open", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", 
@@ -8,9 +8,19 @@ const TimeDropdown = ({day,which}) => {
     ];
 
     // State to store user input and the filtered options
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState(
+        which==="start"?intTimeToString(formData.availableTime[day][0]):intTimeToString(formData.availableTime[day][1])
+    );
     const [filteredOptions, setFilteredOptions] = useState(timeOptions);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+    
+    useEffect(()=>{
+        setInput(which==="start"?intTimeToString(formData.availableTime[day][0]):intTimeToString(formData.availableTime[day][1]))
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    },[isEscaped])
 
     // Function to handle input change and filter dropdown options
     const handleInputChange = (e) => {
@@ -23,11 +33,74 @@ const TimeDropdown = ({day,which}) => {
         );
         setFilteredOptions(filtered);
         setDropdownVisible(true); // Show the dropdown when typing
+
+        if(which==="start"){
+            setFormData(prev=>({
+                ...prev,
+                availableTime:{
+                    ...prev.availableTime,
+                    [day]: [stringTimeToInt(e.target.value),prev.availableTime[day][1]]
+                }
+            }));
+        }else{
+
+            setFormData(prev=>({
+                ...prev,
+                availableTime:{
+                    ...prev.availableTime,
+                    [day]: [prev.availableTime[day][0],stringTimeToInt(e.target.value)]
+                }
+            }));
+        }
     };
+
+
+
+    function stringTimeToInt(time){
+        if(time==="open") return 0;
+        if(time==="close") return 24;
+        if(time==="12pm") return 12;
+        if(time.slice(-2)==="am") return Number(time.slice(0,-2));
+        if(time.slice(-2)==="pm") return (Number(time.slice(0,-2))+12);
+        return time;
+
+    }
+
+    function intTimeToString(time){
+        time = Number(time);
+        if(time<=0) return "open";
+        if(time>=24) return "close";
+        if(time===12) return 12;
+        if(time<12) return time+"am";
+        if(12<time<24) return time-12+"pm";
+        
+        return time;
+    }
+
 
     // Function to handle when an option is selected
     const handleOptionClick = (option) => {
         setInput(option); // Set the input field value to the selected option
+
+        if(which==="start"){
+            console.log(option);
+            setFormData(prev=>({
+                ...prev,
+                availableTime:{
+                    ...prev.availableTime,
+                    [day]: [stringTimeToInt(option),prev.availableTime[day][1]]
+                }
+            }));
+        }else{
+
+            setFormData(prev=>({
+                ...prev,
+                availableTime:{
+                    ...prev.availableTime,
+                    [day]: [prev.availableTime[day][0],stringTimeToInt(option)]
+                }
+            }));
+        }
         setDropdownVisible(false); // Close the dropdown
     };
 
@@ -38,13 +111,7 @@ const TimeDropdown = ({day,which}) => {
         }
     };
 
-    // Attach event listener to close dropdown when clicking outside
-    React.useEffect(() => {
-        document.addEventListener('click', handleOutsideClick);
-        return () => {
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, []);
+
 
     return (
         <div className="dropdown">
@@ -60,6 +127,7 @@ const TimeDropdown = ({day,which}) => {
                 style={{
                     maxWidth: '4rem'
                 }}
+                
             />
             {/* Conditionally show the dropdown */}
             {dropdownVisible && (

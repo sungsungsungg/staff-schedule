@@ -1,4 +1,4 @@
-function EmployeeModalView({employee}){
+function EmployeeModalView({employee,handleClick}){
 
     function timeRange(time){
 
@@ -67,21 +67,21 @@ function EmployeeModalView({employee}){
                 <div className="col col-6">
                     
                     <label htmlFor="mon" className="form-label"><strong>Mon</strong></label>
-                    <p>{timeRange(employee.availableTime[1])}</p>
+                    <p>{timeRange(employee.availableTime.mon)}</p>
                     <label htmlFor="tues" className="form-label"><strong>Tues</strong></label>
-                    <p>{timeRange(employee.availableTime[2])}</p>
+                    <p>{timeRange(employee.availableTime.tues)}</p>
                     <label htmlFor="weds" className="form-label"><strong>Weds</strong></label>
-                    <p>{timeRange(employee.availableTime[3])}</p>
+                    <p>{timeRange(employee.availableTime.weds)}</p>
                     <label htmlFor="thurs" className="form-label"><strong>Thurs</strong></label>
-                    <p>{timeRange(employee.availableTime[4])}</p>
+                    <p>{timeRange(employee.availableTime.thurs)}</p>
                 </div>
                 <div className="col col-6">
                     <label htmlFor="fri" className="form-label"><strong>Fri</strong></label>
-                    <p>{timeRange(employee.availableTime[5])}</p>
+                    <p>{timeRange(employee.availableTime.fri)}</p>
                     <label htmlFor="sat" className="form-label"><strong>Sat</strong></label>
-                    <p>{timeRange(employee.availableTime[6])}</p>
+                    <p>{timeRange(employee.availableTime.sat)}</p>
                     <label htmlFor="sun" className="form-label"><strong>Sun</strong></label>
-                    <p>{timeRange(employee.availableTime[7])}</p>
+                    <p>{timeRange(employee.availableTime.sun)}</p>
                 </div>
             </div>
             
@@ -103,7 +103,7 @@ function EmployeeModalView({employee}){
           </div>
                 </div>
                 <div className="modal-footer">
-                    <button className="btn btn-primary" data-bs-target={`#employee-edit-modal_${employee.id}`} data-bs-toggle="modal">Open second modal</button>
+                    <button className="btn btn-primary" data-bs-target={`#employee-edit-modal_${employee.id}`} data-bs-toggle="modal" onClick={handleClick}>Edit</button>
                 </div>
                 </div>
             </div>

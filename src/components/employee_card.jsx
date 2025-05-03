@@ -1,7 +1,7 @@
 import * as bootstrap from 'bootstrap';
 import Employee_modal from './employee_modal';
 
-function EmployeeCard({employee,updateEmployeeInfo}){
+function EmployeeCard({employee,updateEmployeeInfo, deleteEmployee}){
 
     return(
         <div className="col">
@@ -24,6 +24,7 @@ function EmployeeCard({employee,updateEmployeeInfo}){
                             id={employee.id}
                             employee={employee}
                             updateEmployeeInfo={updateEmployeeInfo}
+                            deleteEmployee={deleteEmployee}
                         />
                     </div>
                     <small className="text-body-secondary">9 mins</small>

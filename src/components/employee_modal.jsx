@@ -1,8 +1,9 @@
 import TimeDropdown from "./dropdown_time";
 import EmployeeModalView from "./employee_modal_view";
 import React, {useState, useEffect, useRef} from 'react';
+import EachDay from "./each_day";
 
-function Employee_modal({employee, updateEmployeeInfo}){
+function Employee_modal({employee, updateEmployeeInfo, deleteEmployee}){
 
 
     //FormData that will be updated to employee
@@ -31,21 +32,25 @@ function Employee_modal({employee, updateEmployeeInfo}){
 
     //When Submitted, updates the employee information
     function handleSubmit(e){
-        console.log(formData);
         e.preventDefault();
         updateEmployeeInfo(employee.id,formData);
     }
 
     //To check if the modal is exited and re-entered
     function handleClick(){
+        setFormData(employee);
         setIsEscaped((prev)=>!prev);
     }
 
     //For rerendering purpose, so the default value is set to employee info.
     useEffect(()=>{
-        setFormData(employee);
+        setFormData({...employee});
     },[isEscaped])
 
+
+    function onDelete(){
+        deleteEmployee(employee.id);
+    }
 
     return(
         <div>
@@ -54,8 +59,28 @@ function Employee_modal({employee, updateEmployeeInfo}){
                 key={employee.id}
                 id={employee.id}
                 employee={employee}
+                handleClick={handleClick}
             />
             {/* Employee Edit Modal */}
+
+
+            <div class="modal fade bd-example-modal-sm" id={`employee-delete-modal_${employee.id}`} tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div className="modal-body">
+                                Are you sure to delete {employee.firstName}?
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close" onClick={onDelete}>Delete</button>
+                                <button className="btn btn-primary" data-bs-target={`#employee-edit-modal_${employee.id}`} data-bs-toggle="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
             <div className="modal fade" id={`employee-edit-modal_${employee.id}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered">
                     <form onSubmit={handleSubmit}>
@@ -80,7 +105,7 @@ function Employee_modal({employee, updateEmployeeInfo}){
 
                                         <div className="col col-6">
                                             <label htmlFor="lastName" className="form-label">Last name</label>
-                                            <input name="lastName" type="text" className="form-control" id="lastName" placeholder="" onChange={onChange} defaultValue={employee.lastName} required/>
+                                            <input name="lastName" type="text" className="form-control" id="lastName" placeholder="" onChange={onChange} value={formData.lastName} required/>
                                             <div className="invalid-feedback">
                                                 Valid last name is required.
                                             </div>
@@ -90,18 +115,25 @@ function Employee_modal({employee, updateEmployeeInfo}){
                                     <div className="col-12 row row-cols-12">
                                         <p><strong>Availability</strong></p>
                                         <div className="col col-6">
-                                            <EachDay day="Mon"/>
-                                            <EachDay day="Tues"/>
-                                            <EachDay day="Weds"/>
-                                            <EachDay day="Thurs"/>
+                                            <EachDay day="mon" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
+                                            <EachDay day="tues" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
+                                            <EachDay day="weds" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
+                                            <EachDay day="thurs" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
                                         </div>
                                         <div className="col col-6">
-                                            <EachDay day="Fri"/>
-                                            <EachDay day="Sat"/>
-                                            <EachDay day="Sun"/>
+                                            <EachDay day="fri" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
+                                            <EachDay day="sat" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
+                                            <EachDay day="sun" setFormData={setFormData} formData={formData} isEscaped={isEscaped}/>
                                         </div>
 
                                     </div>
+
+                                    <div className="col-12 mb-4">
+                                        <p><strong>Max Shifts</strong></p>
+                                        <input name="maxShifts" style={{maxWidth: "100px"}} type="text" className="form-control" id="maxShifts" placeholder="" onChange={onChange} value={formData.maxShifts} required/>
+
+                                    </div>
+
                                     <div className="col-12">
                                         <label><strong>Can Work Alone: </strong>
                                         <input 
@@ -127,93 +159,20 @@ function Employee_modal({employee, updateEmployeeInfo}){
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button className="btn btn-primary" data-bs-target={`#employee-view-modal_${employee.id}`} data-bs-toggle="modal" type="submit">Back to first</button>
+                                <button type="button" className="btn btn-outline-danger"data-bs-target={`#employee-delete-modal_${employee.id}`} data-bs-toggle="modal">Delete</button>
+                                <button className="btn btn-primary" data-bs-target={`#employee-view-modal_${employee.id}`} data-bs-toggle="modal" type="submit">Save</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <button className="btn btn-sm btn-outline-secondary" data-bs-target={`#employee-view-modal_${employee.id}`} data-bs-toggle="modal" onClick={handleClick}>Open first modal</button>
+            <button className="btn btn-sm btn-outline-secondary" data-bs-target={`#employee-view-modal_${employee.id}`} data-bs-toggle="modal" onClick={handleClick}>View</button>
         </div>
     )
     
 }
 
-function EachDay({day, startTime, endTime}){
 
-    // State to track the checkbox status (whether it's checked or not)
-    const [isChecked, setIsChecked] = useState(false);
-
-    // Function to handle checkbox change
-    const handleCheckboxChange = (e) => {
-        setIsChecked(e.target.checked);
-    };
-
-    return(
-    <>
-    <label htmlFor={day} className="form-label mb-1">
-        <strong>{day} &nbsp;&nbsp;&nbsp;</strong>
-        <input 
-            type="checkbox" 
-            id={day} 
-            name={day}
-            checked={isChecked} // Bind checkbox to state
-            onChange={handleCheckboxChange} // Update state when checkbox is toggled
-        />
-        <span className="text-secondary"> &nbsp;all day</span>
-    </label>
-    {isChecked?(
-        <div className="d-flex align-items-center mb-3">
-            <div className="me-3">
-                {/* "From" text */}
-                <span className="me-2">From</span>
-                <div>
-                    <input
-                    id={`${day}From`}
-                    disabled={true}
-                    defaultValue={"open"}
-                    style={{
-                        maxWidth: '4rem'
-                    }}
-                    />
-                </div>
-                
-            </div>
-            <div>
-                {/* "To" text */}
-                <span className="me-2">To</span>
-                <div>
-                    <input
-                    id={`${day}To`}
-                    disabled={true}
-                    defaultValue={"close"}
-                    style={{
-                        maxWidth: '4rem'
-                    }}
-                    />
-                </div>
-                
-            </div>
-        </div>
-    )
-    :(
-        <div className="d-flex align-items-center mb-3">
-            <div className="me-3">
-                {/* "From" text */}
-                <span className="me-2">From</span>
-                <TimeDropdown />
-            </div>
-            <div>
-                {/* "To" text */}
-                <span className="me-2">To</span>
-                <TimeDropdown />
-            </div>
-        </div>
-    )}
-    </>
-    )
-    
-}
 
 
 export default Employee_modal;
